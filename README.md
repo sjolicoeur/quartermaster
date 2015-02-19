@@ -4,7 +4,7 @@ Docker app that polls docker to get a listing of  available containers that have
 
 it will annotate the key with the type of service it guesses from the docker container's name. For example a web facing container should have a name like so:  `<service>.<app name>` == `www.hello_world`
 
-# BUILDING it: 
+## Building it: 
 
 `docker build -t  quartermaster .` (`docker build -t sjolicoeur/quartermaster:lastest .`)
 
