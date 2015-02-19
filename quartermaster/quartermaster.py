@@ -40,21 +40,6 @@ def list_containers():
                     })
     return containers_to_serve
 
-# def write_to_etcd(container_listing): # version with locks doesn't work
-#     client = etcd.Client(host=get_docker_host())
-#     lock = client.get_lock(ROOT_KEY, ttl=60)
-#     with lock as my_lock:
-#         for app in container_listing:
-#             key = "%(root_key)s/%(app_name)s/%(ip)s/%(port)s" % {
-#                 "root_key": ROOT_KEY,
-#                 "app_name": app['name'],
-#                 "ip": app['ip'],
-#                 "port": app['port']
-#             }
-#             log.info("settings key: %s to '%s'" % (key, app['service']))
-#             client.write(key, app['service'], ttl=60*15)
-#         lock.renew(60)
-
 def write_to_etcd(container_listing):
     client = etcd.Client(host=get_docker_host())
     for app in container_listing:
