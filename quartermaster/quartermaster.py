@@ -15,7 +15,7 @@ env = kwargs_from_env(assert_hostname=False)
 env['version'] = os.getenv('DOCKER_API_VERSION', '1.15')
 client = Client(**env)
 ROOT_KEY = os.getenv('QUARTERMASTER_ROOT_KEY','/ha_quartermaster')
-
+TIMEOUT = 60 * 3 # 3 minutes
 get_docker_host = lambda: urlparse(os.getenv('DOCKER_HOST')).hostname
 
 def get_name(name):
@@ -41,7 +41,7 @@ def list_containers():
     return containers_to_serve
 
 def write_to_etcd(container_listing):
-    client = etcd.Client(host=get_docker_host())
+    etcd_client = etcd.Client(host=get_docker_host())
     for app in container_listing:
         key = "%(root_key)s/%(app_name)s/%(ip)s/%(port)s" % {
             "root_key": ROOT_KEY,
@@ -50,7 +50,7 @@ def write_to_etcd(container_listing):
             "port": app['port']
         }
         log.info("settings key: %s to '%s'" % (key, app['service']))
-        client.write(key, app['service'], ttl=60*15)
+        etcd_client.write(key, app['service'], ttl=TIMEOUT*3)
 
 
 if __name__ == '__main__':
@@ -60,4 +60,4 @@ if __name__ == '__main__':
         containers_list = list_containers()
         log.info("Writting to ETCD")
         write_to_etcd(containers_list)
-        time.sleep(60*3)
+        time.sleep(TIMEOUT)
