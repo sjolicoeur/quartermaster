@@ -6,7 +6,7 @@ it will annotate the key with the type of service it guesses from the docker con
 
 ## Building it: 
 
-`docker build -t  quartermaster .` (`docker build -t sjolicoeur/quartermaster:lastest .`)
+`docker build -t  quartermaster .` (`docker build -t sjolicoeur/quartermaster:latest .`)
 
 # Notes
 
